@@ -62,15 +62,16 @@ u = input("Presión de entrada (kPa): ");
 
 s1 = string(options(choice));
 s3 = string(s3(choice));
-interp = interp1(X,Y,u, 'spline');
+interpolant = griddedInterpolant(X,Y, 'linear');
+interp = interpolant(u);
 
 %%
 %Grafico
-newXSamplePoints = min(X):0.01:max(X);
-smoothedY = spline(X, Y, newXSamplePoints);
+newXSamplePoints = min(X):0.1:max(X);
+smoothedY = interpolant(newXSamplePoints);
 % Plot smoothedY and show how the line is
 % smooth, and has no sharp bends.
-plot = plot(newXSamplePoints, smoothedY);
+plot = plot(newXSamplePoints, smoothedY, "-");
 title(title1, "Interpreter", "latex", "FontSize", 15);
 hold on
 plot2 = scatter(u, interp, "ob");

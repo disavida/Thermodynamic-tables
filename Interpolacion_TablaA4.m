@@ -61,10 +61,13 @@ u = input("Temperatura de entrada (°C): ");
 
 s1 = string(options(choice));
 s3 = string(s3(choice));
-interp = interp1(X,Y,u, 'spline');
+interpolant = griddedInterpolant(X,Y, 'linear');
+interp = interpolant(u);
 
-newXSamplePoints = min(X):0.01:max(X);
-smoothedY = spline(X, Y, newXSamplePoints);
+%%
+%Grafico
+newXSamplePoints = min(X):0.1:max(X);
+smoothedY = interpolant(newXSamplePoints);
 % Plot smoothedY and show how the line is
 % smooth, and has no sharp bends.
 plot = plot(newXSamplePoints, smoothedY);

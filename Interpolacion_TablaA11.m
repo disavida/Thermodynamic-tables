@@ -64,19 +64,22 @@ u = input("Temperatura de entrada (°C): ");
 
 s1 = string(options(choice));
 s3 = string(s3(choice));
-interp = interp1(X,Y,u, 'spline');
+interpolant = griddedInterpolant(X,Y, 'linear');
+interp = interpolant(u);
 
-newXSamplePoints = min(X):0.01:max(X);
-smoothedY = spline(X, Y, newXSamplePoints);
+%%
+%Grafico
+newXSamplePoints = min(X):0.1:max(X);
+smoothedY = interpolant(newXSamplePoints);
 % Plot smoothedY and show how the line is
 % smooth, and has no sharp bends.
-plot = plot(newXSamplePoints, smoothedY);
+plot = plot(smoothedY, newXSamplePoints);
 title(title1, "Interpreter", "latex", "FontSize", 15);
 hold on
-plot2 = scatter(u, interp, "ob");
+plot2 = scatter(interp, u, "ob");
 %%Crea un data tip
-plot2.DataTipTemplate.DataTipRows(2).Label = strcat(s3,"(",s2,")" ,":"); 'Interpreter'; 'latex'; %Asigna nombre al valor x
-plot2.DataTipTemplate.DataTipRows(1).Label = 'Temperatura (Celcius):';'Interpreter'; 'latex'; %Asigna nombre al valor y
+plot2.DataTipTemplate.DataTipRows(1).Label = strcat(s3,"(",s2,")" ,":"); 'Interpreter'; 'latex'; %Asigna nombre al valor x
+plot2.DataTipTemplate.DataTipRows(2).Label = 'Temperatura (Celcius):';'Interpreter'; 'latex'; %Asigna nombre al valor y
 dt = datatip(plot2,u, interp, 'Interpreter', 'latex');%Ingresa el punto mediante el método
 %% Graphic Current Axes
 a = gca;
@@ -85,9 +88,9 @@ a.TickLabelInterpreter = "latex";
 %%
 y1 =strcat(s3," (",s2,")");
 x1 = "Temperatura (Celcius)";
-ylabel(y1, 'Interpreter', 'latex');
-xlabel(x1','Interpreter', 'latex');
-xlim([min(X) max(X)]);
+xlabel(y1, 'Interpreter', 'latex');
+ylabel(x1','Interpreter', 'latex');
+xlim([min(Y) max(Y)]);
 hold off
 %%
 %Resultado
