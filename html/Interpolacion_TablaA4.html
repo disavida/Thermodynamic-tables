@@ -1,0 +1,192 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Interpolacion_TablaA4</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-09-12"><meta name="DC.source" content="Interpolacion_TablaA4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%%Tabla A4</span>
+<span class="comment">%David Uma&ntilde;a</span>
+<span class="comment">%Este script interpola los datos de la tabla A4 de Termodin&aacute;mica de Cengel</span>
+<span class="comment">%para encontrar los datos de Presi&oacute;n de saturaci&oacute;n, Volumen espec&iacute;fico,</span>
+<span class="comment">%energ&iacute;a interna espec&iacute;fica, entalp&iacute;a espec&iacute;fica y entrop&iacute;a espec&iacute;fica</span>
+clc; clear <span class="string">all</span>; close <span class="string">all</span>;
+TablaA4 = table2array(readtable(<span class="string">"Tablas\TablaA4.txt"</span>, <span class="string">"PreserveVariableNames"</span>, 1));
+options =  {<span class="string">"Presi&oacute;n"</span>, <span class="string">"Volumen L&iacute;q. Sat. (vf)"</span>, <span class="string">"Volumen de Vap. Sat. (vg)"</span>, <span class="string">"Energ&iacute;a interna L&iacute;q. Sat. (uf)"</span>, <span class="string">"Energ&iacute;a interna Vap. Sat. (ug)"</span>, <span class="string">"Entalp&iacute;a L&iacute;q. Sat. (hf)"</span>, <span class="string">"Entalp&iacute;a Vap. Sat. (hg)"</span>, <span class="string">"Entrop&iacute;a L&iacute;q. Sat. (sf)"</span>, <span class="string">"Entrop&iacute;a Vap. Sat. (sf)"</span>};
+
+choice = menu(<span class="string">'Seleccione la propiedad a interpolar'</span>,options);
+<span class="keyword">switch</span> choice
+    <span class="keyword">case</span> 1 <span class="comment">%"Presi&oacute;n"</span>
+      x = 2;
+      s2 = <span class="string">"kPa"</span>;
+    <span class="keyword">case</span> 2 <span class="comment">%"Volumen L&iacute;q. Sat. (vf)"</span>
+      x = 3;
+      s2 = <span class="string">"m^3/kg"</span>;
+    <span class="keyword">case</span> 3 <span class="comment">%"Volumen de Vap. Sat. (vg)"</span>
+      x = 4;
+       s2 = <span class="string">"m^3/kg"</span>;
+    <span class="keyword">case</span> 4 <span class="comment">%"Energ&iacute;a interna L&iacute;q. Sat. (uf)"</span>
+      x = 5;
+       s2 = <span class="string">"kJ/kg"</span>;
+    <span class="keyword">case</span> 5 <span class="comment">%"Energ&iacute;a interna Vap. Sat. (ug)"</span>
+      x = 7;
+      s2 = <span class="string">"kJ/kg"</span>;
+    <span class="keyword">case</span> 6 <span class="comment">%"Entalp&iacute;a L&iacute;q. Sat. (hf)"</span>
+      x = 8;
+      s2 = <span class="string">"kJ/kg"</span>;
+    <span class="keyword">case</span>  7 <span class="comment">%"Entalp&iacute;a Vap. Sat. (hg)"</span>
+      x = 10;
+      s2 = <span class="string">"kJ/kg"</span>;
+    <span class="keyword">case</span> 8 <span class="comment">%"Entrop&iacute;a L&iacute;q. Sat. (sf)"</span>
+      x = 11;
+      s2 = <span class="string">"kJ/kg"</span>;
+    <span class="keyword">case</span> 9 <span class="comment">%"Entrop&iacute;a Vap. Sat. (sf)"</span>
+      x = 13;
+      s2 = <span class="string">"kJ/kg"</span>;
+<span class="keyword">end</span>
+X = TablaA4(1:end,1);
+Y = TablaA4(1:end,x);
+u = input(<span class="string">"Temperatura de entrada (&deg;C): "</span>);
+
+s1 = string(options(choice));
+interp = interp1(X,Y,u, <span class="string">'spline'</span>);
+
+newXSamplePoints = min(X):0.01:max(X);
+smoothedY = spline(X, Y, newXSamplePoints);
+<span class="comment">% Plot smoothedY and show how the line is</span>
+<span class="comment">% smooth, and has no sharp bends.</span>
+plot = plot(newXSamplePoints, smoothedY);
+hold <span class="string">on</span>
+plot2 = scatter(u, interp, <span class="string">"ob"</span>);
+interestpoint = datatip(plot2, u, interp);
+resultado = strcat(s1,<span class="string">" : "</span>, num2str(interp),<span class="string">" "</span>,  s2);
+disp(<span class="string">" "</span>);
+disp(resultado)
+</pre><pre class="codeoutput error">Unrecognized function or variable 'x'.
+
+Error in Interpolacion_TablaA4 (line 41)
+Y = TablaA4(1:end,x);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%%Tabla A4
+%David Umaña
+%Este script interpola los datos de la tabla A4 de Termodinámica de Cengel
+%para encontrar los datos de Presión de saturación, Volumen específico,
+%energía interna específica, entalpía específica y entropía específica
+clc; clear all; close all;
+TablaA4 = table2array(readtable("Tablas\TablaA4.txt", "PreserveVariableNames", 1));
+options =  {"Presión", "Volumen Líq. Sat. (vf)", "Volumen de Vap. Sat. (vg)", "Energía interna Líq. Sat. (uf)", "Energía interna Vap. Sat. (ug)", "Entalpía Líq. Sat. (hf)", "Entalpía Vap. Sat. (hg)", "Entropía Líq. Sat. (sf)", "Entropía Vap. Sat. (sf)"};
+
+choice = menu('Seleccione la propiedad a interpolar',options);
+switch choice
+    case 1 %"Presión"
+      x = 2;
+      s2 = "kPa";
+    case 2 %"Volumen Líq. Sat. (vf)"
+      x = 3;
+      s2 = "m^3/kg";
+    case 3 %"Volumen de Vap. Sat. (vg)"
+      x = 4;
+       s2 = "m^3/kg";
+    case 4 %"Energía interna Líq. Sat. (uf)"
+      x = 5;
+       s2 = "kJ/kg";
+    case 5 %"Energía interna Vap. Sat. (ug)"
+      x = 7;
+      s2 = "kJ/kg";
+    case 6 %"Entalpía Líq. Sat. (hf)"
+      x = 8;
+      s2 = "kJ/kg";
+    case  7 %"Entalpía Vap. Sat. (hg)"
+      x = 10;
+      s2 = "kJ/kg";
+    case 8 %"Entropía Líq. Sat. (sf)"
+      x = 11;
+      s2 = "kJ/kg";
+    case 9 %"Entropía Vap. Sat. (sf)"
+      x = 13;
+      s2 = "kJ/kg";
+end
+X = TablaA4(1:end,1);
+Y = TablaA4(1:end,x);
+u = input("Temperatura de entrada (°C): ");
+
+s1 = string(options(choice));
+interp = interp1(X,Y,u, 'spline');
+
+newXSamplePoints = min(X):0.01:max(X);
+smoothedY = spline(X, Y, newXSamplePoints);
+% Plot smoothedY and show how the line is
+% smooth, and has no sharp bends.
+plot = plot(newXSamplePoints, smoothedY);
+hold on
+plot2 = scatter(u, interp, "ob");
+interestpoint = datatip(plot2, u, interp);
+resultado = strcat(s1," : ", num2str(interp)," ",  s2);
+disp(" ");
+disp(resultado)
+
+##### SOURCE END #####
+--></body></html>
