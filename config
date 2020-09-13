@@ -4,3 +4,6 @@
 	filemode = false
 	bare = true
 	logallrefupdates = false
+[remote "origin"]
+	url = https://github.com/disavida/Termodinamic_tables
+	fetch = +refs/heads/*:refs/remotes/origin/*
